@@ -34,7 +34,7 @@ namespace PKHeX.Core
             Evolves8.FixEvoTreeSS();
         }
 
-        internal static EvolutionTree GetEvolutionTree(int generation)
+        public static EvolutionTree GetEvolutionTree(int generation)
         {
             return generation switch
             {
