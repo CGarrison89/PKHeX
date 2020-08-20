@@ -12,7 +12,7 @@ namespace PKHeX.Core
         protected override string BAKText => $"{OT} ({Version}) - {Blocks.Played.LastSavedTime}";
         public override string Filter => "savedata|*.bin";
         public override string Extension => ".bin";
-        public override string[] PKMExtensions => PKM.Extensions.Where(f => f[1] == 'b' && f[f.Length - 1] == '7').ToArray();
+        public override IReadOnlyList<string> PKMExtensions => PKM.Extensions.Where(f => f[1] == 'b' && f[f.Length - 1] == '7').ToArray();
 
         public override Type PKMType => typeof(PB7);
         public override PKM BlankPKM => new PB7();
@@ -87,17 +87,8 @@ namespace PKHeX.Core
         {
             var pk = (PB7)pkm;
             // Apply to this Save File
-            int CT = pk.CurrentHandler;
             var Date = DateTime.Now;
             pk.Trade(this, Date.Day, Date.Month, Date.Year);
-            if (CT != pk.CurrentHandler) // Logic updated Friendship
-            {
-                // Copy over the Friendship Value only under certain circumstances
-                if (pk.Moves.Contains(216)) // Return
-                    pk.CurrentFriendship = pk.OppositeFriendship;
-                else if (pk.Moves.Contains(218)) // Frustration
-                    pk.CurrentFriendship = pk.OppositeFriendship;
-            }
             pk.RefreshChecksum();
         }
 
